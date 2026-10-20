@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Travaux — Stella Yathe</title>
-  <meta name="description" content="Analyses d'entreprises, concepts financiers, rapports annuels et lectures de transactions M&A.">
+  <title>Work — Stella Yathe</title>
+  <meta name="description" content="Company analyses, financial concepts, annual reports and M&amp;A transaction readings.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -18,40 +18,40 @@
       <a href="../index.html" class="brand">Stella <span>YATHE</span></a>
       <nav>
         <ul>
-          <li><a href="../index.html">Accueil</a></li>
-          <li><a href="../projet/index.html">Projet</a></li>
-          <li><a href="index.html" class="active">Travaux</a></li>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../projet/index.html">Project</a></li>
+          <li><a href="index.html" class="active">Work</a></li>
           <li><a href="../cv/index.html">CV &amp; Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <!-- EN-TÊTE -->
+  <!-- HEADER -->
   <section class="page-head">
     <div class="wrap">
-      <span class="eyebrow">Travaux</span>
-      <h1>Analyses &amp; recherches</h1>
-      <p>Chaque étude d'une entreprise ou d'une notion donne lieu à une publication : méthode, chiffres, conclusion.</p>
+      <span class="eyebrow">Work</span>
+      <h1>Analyses &amp; research</h1>
+      <p>Each study of a company or a concept becomes a publication: method, figures, conclusion.</p>
     </div>
   </section>
 
-  <!-- LISTE -->
+  <!-- LIST -->
   <section class="block">
     <div class="wrap">
 
       <div class="filters" id="filters">
-        <button class="chip on" data-cat="all">Tout</button>
-        <button class="chip" data-cat="Analyse d'entreprise">Analyses d'entreprises</button>
-        <button class="chip" data-cat="Concept financier">Concepts financiers</button>
-        <button class="chip" data-cat="Rapport annuel">Rapports annuels</button>
+        <button class="chip on" data-cat="all">All</button>
+        <button class="chip" data-cat="Analyse d'entreprise">Company analyses</button>
+        <button class="chip" data-cat="Concept financier">Financial concepts</button>
+        <button class="chip" data-cat="Rapport annuel">Annual reports</button>
         <button class="chip" data-cat="Transaction M&A">Transactions / M&amp;A</button>
       </div>
 
-      <!-- Rempli par main.js depuis Firestore -->
+      <!-- Filled by main.js from Firestore (category values stay in French: they match the stored data) -->
 <div class="grid" id="works"></div>
 
-      <p id="empty" style="display:none;color:var(--muted);margin-top:24px">Aucune publication dans cette catégorie pour le moment.</p>
+      <p id="empty" style="display:none;color:var(--muted);margin-top:24px">No publication in this category yet.</p>
     </div>
   </section>
 
@@ -59,11 +59,11 @@
   <footer class="footer">
     <div class="wrap">
       <span>© 2026 Stella Yathe</span>
-      <span>Finance d'entreprise · Audit · M&amp;A</span>
+      <span>Corporate Finance · Valuation · M&amp;A</span>
     </div>
   </footer>
 
-  <!-- Filtre par catégorie (fonctionne aussi sur les cartes chargées dynamiquement) -->
+  <!-- Category filter (also works on dynamically loaded cards) -->
   <script>
     document.getElementById('filters').addEventListener('click', function (e) {
       var chip = e.target.closest('.chip');
