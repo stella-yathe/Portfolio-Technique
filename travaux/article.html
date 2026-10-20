@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Travaux — Stella Yathe</title>
+  <title>Work — Stella Yathe</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
@@ -28,36 +28,36 @@
       <a href="../index.html" class="brand">Stella <span>YATHE</span></a>
       <nav>
         <ul>
-          <li><a href="../index.html">Accueil</a></li>
-          <li><a href="../projet/index.html">Projet</a></li>
-          <li><a href="index.html" class="active">Travaux</a></li>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../projet/index.html">Project</a></li>
+          <li><a href="index.html" class="active">Work</a></li>
           <li><a href="../cv/index.html">CV &amp; Contact</a></li>
         </ul>
       </nav>
     </div>
   </header>
 
-  <!-- EN-TÊTE (rempli par le script) -->
+  <!-- HEADER (filled by the script) -->
   <section class="page-head">
     <div class="wrap">
-      <div class="article-meta"><span id="a-cat">Travaux</span><span id="a-date"></span></div>
-      <h1 id="a-title" style="margin-top:16px">Chargement…</h1>
+      <div class="article-meta"><span id="a-cat">Work</span><span id="a-date"></span></div>
+      <h1 id="a-title" style="margin-top:16px">Loading…</h1>
       <p id="a-excerpt"></p>
     </div>
   </section>
 
-  <!-- CORPS -->
+  <!-- BODY -->
   <section class="block">
     <div class="wrap">
       <article class="prose" id="a-body"></article>
 
       <div class="docs-box" id="docs-box" style="display:none">
-        <span class="eyebrow">Documents à télécharger</span>
+        <span class="eyebrow">Documents to download</span>
         <div id="docs-list"></div>
       </div>
 
       <div class="article-actions">
-        <a href="index.html" class="link-arrow">← Tous les travaux</a>
+        <a href="index.html" class="link-arrow">← All work</a>
       </div>
     </div>
   </section>
@@ -66,7 +66,7 @@
   <footer class="footer">
     <div class="wrap">
       <span>© 2026 Stella Yathe</span>
-      <span>Finance d'entreprise · Audit · M&amp;A</span>
+      <span>Corporate Finance · Valuation · M&amp;A</span>
     </div>
   </footer>
 
@@ -74,10 +74,12 @@
     import { db } from "../assets/js/firebase-config.js";
     import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+    // Stored categories are in French; display them in English
+    const CAT = { "Analyse d'entreprise": "Company analysis", "Concept financier": "Financial concept", "Rapport annuel": "Annual report", "Transaction M&A": "M&A transaction" };
     const $ = (id) => document.getElementById(id);
     const esc = (s = "") => String(s).replace(/[&<>"']/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[c]));
 
-    // Mise en forme légère : **gras**, *italique*, [texte](https://lien), ![alt](image)
+    // Light formatting: **bold**, *italic*, [text](https://link), ![alt](image)
     function inline(s) {
       return esc(s)
         .replace(/!\[([^\]]*)\]\((https?:\/\/[^)\s]+|[^)\s:]+)\)/g, '<img src="$2" alt="$1">')
@@ -86,7 +88,7 @@
         .replace(/\*(.+?)\*/g, "<em>$1</em>");
     }
 
-    // ## Titre · ### Sous-titre · - puce · > citation · ligne vide = nouveau paragraphe
+    // ## Title · ### Subtitle · - bullet · > quote · blank line = new paragraph
     function render(text) {
       let html = "", inList = false, para = [];
       const flushP = () => { if (para.length) { html += "<p>" + inline(para.join(" ")) + "</p>"; para = []; } };
@@ -105,22 +107,22 @@
       return html;
     }
 
-    // Type de document d'après l'extension
+    // Document type from the extension
     function fileType(url) {
       const ext = (url.split("?")[0].split(".").pop() || "").toLowerCase();
       if (ext === "pdf") return "PDF";
       if (["xlsx", "xlsm", "xls", "csv"].includes(ext)) return "Excel";
       if (["pptx", "ppt"].includes(ext)) return "PowerPoint";
       if (["docx", "doc"].includes(ext)) return "Word";
-      return "Fichier";
+      return "File";
     }
-    // http(s) ou chemin relatif uniquement
+    // http(s) or relative path only
     const safeUrl = (u) => /^https?:\/\//i.test(u) || !/^[a-z][a-z0-9+.-]*:/i.test(u);
 
     const notFound = () => {
-      $("a-title").textContent = "Publication introuvable";
-      $("a-excerpt").textContent = "Cette publication n'existe pas ou n'est pas encore disponible.";
-      $("a-cat").textContent = "Travaux";
+      $("a-title").textContent = "Publication not found";
+      $("a-excerpt").textContent = "This publication does not exist or is not available yet.";
+      $("a-cat").textContent = "Work";
     };
 
     (async () => {
@@ -131,24 +133,24 @@
         if (!snap.exists()) return notFound();
         const w = snap.data();
 
-        document.title = (w.title || "Travaux") + " — Stella Yathe";
-        $("a-cat").textContent = w.category || "Travaux";
+        document.title = (w.title || "Work") + " — Stella Yathe";
+        $("a-cat").textContent = CAT[w.category] || w.category || "Work";
         const d = w.date?.toDate ? w.date.toDate() : (w.date ? new Date(w.date) : null);
-        $("a-date").textContent = d && !isNaN(d) ? d.toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }) : "";
+        $("a-date").textContent = d && !isNaN(d) ? d.toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : "";
         $("a-title").textContent = w.title || "";
         $("a-excerpt").textContent = w.excerpt || "";
         $("a-body").innerHTML = render(w.content || "");
 
-        // Documents : nouvelle liste "files", ou ancien champ "pdfUrl"
+        // Documents: new "files" list, or legacy "pdfUrl" field
         let files = Array.isArray(w.files) ? w.files.slice() : [];
-        if (!files.length && w.pdfUrl) files = [{ label: "Télécharger le PDF", url: w.pdfUrl }];
+        if (!files.length && w.pdfUrl) files = [{ label: "Download the PDF", url: w.pdfUrl }];
         files = files.filter(f => f && f.url && safeUrl(f.url));
         if (files.length) {
           $("docs-list").innerHTML = files.map(f => `
             <a class="doc" href="${esc(f.url)}" target="_blank" rel="noopener">
               <span class="ftype">${fileType(f.url)}</span>
               <span class="fname">${esc(f.label || f.url.split("/").pop())}</span>
-              <span class="fgo">Télécharger →</span>
+              <span class="fgo">Download →</span>
             </a>`).join("");
           $("docs-box").style.display = "";
         }
