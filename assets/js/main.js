@@ -12,10 +12,9 @@ const fmtDate = (d) => {
   return date.toLocaleDateString("en-GB", { month: "short", year: "numeric" });
 };
 
-function cardHTML(w, inTravaux) {
-  const href = (inTravaux ? "" : "travaux/") + "article.html?id=" + encodeURIComponent(w.id);
+function cardHTML(w) {
   return `
-    <a class="card" href="${href}" data-cat="${esc(w.category)}">
+    <a class="card" href="article.html?id=${encodeURIComponent(w.id)}" data-cat="${esc(w.category)}">
       <div class="meta"><b>${esc(CAT[w.category] || w.category)}</b><span>${esc(fmtDate(w.date))}</span></div>
       <h3>${esc(w.title)}</h3>
       <p>${esc(w.excerpt)}</p>
@@ -23,22 +22,11 @@ function cardHTML(w, inTravaux) {
     </a>`;
 }
 
-// No publication: hide the section on the home page, show a message on the Work page
-function showEmpty() {
-  const sec = document.getElementById("latest-section");
-  if (sec) sec.style.display = "none";
-  const empty = document.getElementById("empty");
-  if (empty && document.getElementById("works")) {
-    empty.textContent = "First publications coming soon.";
-    empty.style.display = "block";
-  }
-}
-
+// Other publications (Work page only). The Eiffage case has its own static page, so it is skipped here.
 async function loadWorks() {
-  const latest = document.getElementById("latest");
   const works = document.getElementById("works");
-  const target = works || latest;
-  if (!target) return; // page without a list: nothing to load
+  const section = document.getElementById("more-section");
+  if (!works || !section) return;
 
   try {
     const { db } = await import("./firebase-config.js");
@@ -47,8 +35,9 @@ async function loadWorks() {
 
     // No server-side orderBy: avoids creating a composite index
     const snap = await getDocs(query(collection(db, "travaux"), where("published", "==", true)));
-    let items = snap.docs.map(d => ({ id: d.id, ...d.data() }));
-    if (!items.length) return showEmpty();
+    let items = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+      .filter(w => !/eiffage/i.test(w.title || ""));
+    if (!items.length) return;
 
     items.sort((a, b) => {
       const da = a.date?.toDate ? a.date.toDate() : new Date(a.date || 0);
@@ -56,11 +45,10 @@ async function loadWorks() {
       return dbb - da;
     });
 
-    if (!works) items = items.slice(0, 3); // home page: latest 3
-    target.innerHTML = items.map(w => cardHTML(w, !!works)).join("");
+    works.innerHTML = items.map(cardHTML).join("");
+    section.style.display = "";
   } catch (err) {
-    console.warn("Could not load works:", err);
-    showEmpty();
+    console.warn("Could not load other publications:", err);
   }
 }
 

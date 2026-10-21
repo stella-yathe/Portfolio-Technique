@@ -213,3 +213,32 @@ section.block{padding:96px 0}
 .to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
 .to-top:hover{background:var(--brass);color:var(--navy)}
 .to-top svg{width:18px;height:18px}
+
+
+/* ===== case study ===== */
+.case h2{font-size:clamp(1.8rem,3.4vw,2.6rem);margin:14px 0 18px}
+.case p{max-width:78ch;color:var(--ink);margin-bottom:22px;font-size:1rem}
+.case .cap{font-size:.82rem;color:var(--muted);margin-top:14px}
+.kpi4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.kpi4 .proof{padding:28px 24px}
+.kpi4 .proof .big{font-size:2.5rem}
+.tbl-wrap{overflow-x:auto;margin:26px 0 8px}
+.tbl{width:100%;border-collapse:collapse;font-size:.92rem;background:var(--paper)}
+.tbl th{font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--brass);font-weight:500;text-align:right;padding:12px 14px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tbl td{padding:11px 14px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.tbl th:first-child,.tbl td:first-child{text-align:left;white-space:normal}
+.tbl tr.hl td,.tbl td.hl{background:var(--navy);color:var(--ivory);font-weight:500}
+.plain{list-style:none}
+.plain li{font-size:.92rem;color:var(--muted);margin-bottom:10px}
+.ff{margin:8px 0}
+.ff-row{display:grid;grid-template-columns:110px 1fr 210px;gap:16px;align-items:center;margin-bottom:12px;font-size:.88rem}
+.ff-lab{color:var(--ink)}
+.ff-val{color:var(--muted);font-size:.8rem}
+.ff-track{position:relative;height:24px;background:rgba(10,26,47,.05)}
+.ff-bar{position:absolute;top:5px;bottom:5px;background:var(--navy)}
+.ff-mid{position:absolute;top:0;bottom:0;width:2px;background:var(--brass)}
+.ff-mk{position:absolute;top:-4px;bottom:-4px;border-left:1px dashed var(--ink);z-index:2}
+.ff-axis .ff-track{height:18px;background:none}
+.ff-tick{position:absolute;top:0;font-size:.7rem;color:var(--muted);transform:translateX(-50%)}
+@media(max-width:900px){.kpi4{grid-template-columns:repeat(2,1fr)}.ff-row{grid-template-columns:1fr;gap:4px}.ff-val{margin-bottom:6px}.ff-axis .ff-lab,.ff-axis .ff-val{display:none}}
+@media(max-width:520px){.kpi4{grid-template-columns:1fr}}
